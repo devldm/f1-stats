@@ -14,13 +14,15 @@ class Result {
   final Driver driver;
   final Constructor constructor;
   final String fastestLap;
+  final String status;
 
   const Result(
       {required this.position,
       required this.points,
       required this.driver,
       required this.constructor,
-      required this.fastestLap});
+      required this.fastestLap,
+      required this.status});
 
   factory Result.fromJson(Map<String, dynamic> json) {
     return Result(
@@ -28,7 +30,8 @@ class Result {
         points: json['points'],
         fastestLap: json['FastestLap']['Time']['time'],
         driver: Driver.fromJson(json['Driver']),
-        constructor: Constructor.fromJson(json['Constructor']));
+        constructor: Constructor.fromJson(json['Constructor']),
+        status: json['status']);
   }
 }
 
