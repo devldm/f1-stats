@@ -1,7 +1,6 @@
+import 'package:f1stats/widgets/nav_drawer.dart';
 import 'package:flutter/material.dart';
 import '../services/data.dart';
-import 'constructorsChamp.dart';
-import 'home.dart';
 
 class MyDriversPage extends StatefulWidget {
   const MyDriversPage({Key? key, required this.title}) : super(key: key);
@@ -64,48 +63,7 @@ class _MyDriversPageState extends State<MyDriversPage> {
       body: const Center(
         child: Text('drivers championship page'),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text('F1 Stats'),
-            ),
-            ListTile(
-              title: const Text('Race Results'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                Navigator.pushNamed(context, MyHomePage.id);
-                // Then close the drawer
-                //Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Drivers Championship'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                Navigator.pushNamed(context, MyDriversPage.id);
-                // Then close the drawer
-                //Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Constructors Championship'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pushNamed(context, MyConstructorsPage.id);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: const NavDrawer(),
     );
   }
 }

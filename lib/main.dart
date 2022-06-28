@@ -1,5 +1,5 @@
-import 'package:f1stats/screens/constructorsChamp.dart';
-import 'package:f1stats/screens/driversChamp.dart';
+import 'package:f1stats/screens/constructors_championship.dart';
+import 'package:f1stats/screens/drivers_championship.dart';
 import 'package:flutter/material.dart';
 import 'screens/home.dart';
 
@@ -21,10 +21,11 @@ class MyApp extends StatelessWidget {
       home: const MyHomePage(title: 'F1 Stats'),
       initialRoute: MyHomePage.id,
       routes: {
-        MyHomePage.id: (context) => MyHomePage(title: 'f1 home'),
-        MyDriversPage.id: (context) => MyDriversPage(title: 'f1 drivers'),
+        MyHomePage.id: (context) => const MyHomePage(title: 'Race Results'),
+        MyDriversPage.id: (context) =>
+            const MyDriversPage(title: 'Drivers Championship'),
         MyConstructorsPage.id: (context) =>
-            MyConstructorsPage(title: 'f1 constructors'),
+            const MyConstructorsPage(title: 'Constructors Championship'),
       },
     );
   }

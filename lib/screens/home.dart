@@ -1,7 +1,6 @@
-import 'package:f1stats/screens/constructorsChamp.dart';
 import 'package:flutter/material.dart';
 import '../services/data.dart';
-import 'driversChamp.dart';
+import '../widgets/nav_drawer.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -179,48 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
           return const CircularProgressIndicator();
         },
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text('F1 Stats'),
-            ),
-            ListTile(
-              title: const Text('Race Results'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                Navigator.pushNamed(context, MyHomePage.id);
-                // Then close the drawer
-                //Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Drivers Championship'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                Navigator.pushNamed(context, MyDriversPage.id);
-                // Then close the drawer
-                //Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Constructors Championship'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pushNamed(context, MyConstructorsPage.id);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: const NavDrawer(),
     );
   }
 }
