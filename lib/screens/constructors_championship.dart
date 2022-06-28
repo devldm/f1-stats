@@ -22,28 +22,22 @@ class MyConstructorsPage extends StatefulWidget {
 }
 
 class _MyConstructorsPageState extends State<MyConstructorsPage> {
-  late Future<List<Result>> futureResult;
+  late Future<List<Result>> futureConstructorsResult;
 
   @override
   void initState() {
     super.initState();
-    futureResult = fetchResult();
+    futureConstructorsResult = fetchConstructorsChampResult();
   }
 
   void refresh() {
     setState(() {
-      futureResult = fetchResult();
+      futureConstructorsResult = fetchConstructorsChampResult();
     });
   }
 
   void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-    });
+    setState(() {});
   }
 
   @override
@@ -60,8 +54,90 @@ class _MyConstructorsPageState extends State<MyConstructorsPage> {
           )
         ],
       ),
-      body: const Center(
-        child: Text('Constructors championship page'),
+      body: FutureBuilder<List<Result>>(
+        future: futureConstructorsResult,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData) {
+            return ListView.builder(
+                shrinkWrap: true,
+                itemCount: snapshot.data?.length,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(4.5),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white60,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      width: MediaQuery.of(context).size.width * 0.95,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  CircleAvatar(
+                                    backgroundColor: Colors.blue,
+                                    child: Text(
+                                      snapshot.data![index].position,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    snapshot.data![index].constructor?.name ??
+                                        "none",
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        snapshot.data![index].points,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 30,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 30,
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                });
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+          // By default, show a loading spinner.
+          return const CircularProgressIndicator();
+        },
       ),
       drawer: const NavDrawer(),
     );

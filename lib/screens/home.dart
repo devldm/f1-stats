@@ -120,13 +120,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        snapshot.data![index].driver.code,
+                                        snapshot.data![index].driver!.code,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
                                       ),
                                       Text(
-                                        snapshot.data![index].driver.name,
+                                        snapshot.data![index].driver!.name,
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w300,
@@ -146,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   //   textAlign: TextAlign.left,
                                   // ),
                                   Text(
-                                    snapshot.data![index].constructor.name,
+                                    snapshot.data![index].constructor!.name,
                                     textAlign: TextAlign.left,
                                   ),
                                   const SizedBox(

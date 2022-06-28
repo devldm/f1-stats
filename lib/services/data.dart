@@ -11,27 +11,41 @@ class Results {
 class Result {
   final String position;
   final String points;
-  final Driver driver;
-  final Constructor constructor;
-  final String fastestLap;
-  final String status;
+  final Driver? driver;
+  final Constructor? constructor;
+  final String? fastestLap;
+  final String? status;
 
   const Result(
       {required this.position,
       required this.points,
-      required this.driver,
-      required this.constructor,
-      required this.fastestLap,
-      required this.status});
+      this.driver,
+      this.constructor,
+      this.fastestLap,
+      this.status});
 
-  factory Result.fromJson(Map<String, dynamic> json) {
-    return Result(
-        position: json['position'],
-        points: json['points'],
-        fastestLap: json['FastestLap']['Time']['time'],
-        driver: Driver.fromJson(json['Driver']),
-        constructor: Constructor.fromJson(json['Constructor']),
-        status: json['status']);
+  factory Result.fromJson(Map<String, dynamic> json, String type) {
+    if (type == 'raceResult') {
+      return Result(
+          position: json['position'],
+          points: json['points'],
+          fastestLap: json['FastestLap']['Time']['time'],
+          driver: Driver.fromJson(json['Driver']),
+          constructor: Constructor.fromJson(json['Constructor']),
+          status: json['status']);
+    } else if (type == 'driversChampionship') {
+      return Result(
+          position: json['position'],
+          points: json['points'],
+          driver: Driver.fromJson(json['Driver']),
+          constructor: Constructor.fromJson(json['Constructors'][0]));
+    } else if (type == 'constructorsChampionship') {
+      return Result(
+          position: json['position'],
+          points: json['points'],
+          constructor: Constructor.fromJson(json['Constructor']));
+    }
+    return Result.fromJson(json, type);
   }
 }
 
@@ -71,7 +85,57 @@ Future<List<Result>> fetchResult() async {
     var allPositions = data["MRData"]["RaceTable"]["Races"][0]["Results"];
     var results = <Result>[];
     allPositions.forEach((value) {
-      results.add(Result.fromJson(value));
+      results.add(Result.fromJson(value, 'raceResult'));
+    });
+    return results;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load result');
+  }
+}
+
+Future<List<Result>> fetchDriversChampResult() async {
+  var dio = Dio();
+  const url = 'http://ergast.com/api/f1/current/driverStandings.json';
+  dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: url)).interceptor);
+  final response = await dio.get(url,
+      options: buildCacheOptions(const Duration(minutes: 5)));
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    var data = response.data;
+    var allPositions = data["MRData"]["StandingsTable"]["StandingsLists"][0]
+        ["DriverStandings"];
+    var results = <Result>[];
+    allPositions.forEach((value) {
+      results.add(Result.fromJson(value, 'driversChampionship'));
+    });
+    return results;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load result');
+  }
+}
+
+Future<List<Result>> fetchConstructorsChampResult() async {
+  var dio = Dio();
+  const url = 'http://ergast.com/api/f1/current/constructorStandings.json';
+  dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: url)).interceptor);
+  final response = await dio.get(url,
+      options: buildCacheOptions(const Duration(minutes: 5)));
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    var data = response.data;
+    var allPositions = data["MRData"]["StandingsTable"]["StandingsLists"][0]
+        ["ConstructorStandings"];
+    var results = <Result>[];
+    allPositions.forEach((value) {
+      results.add(Result.fromJson(value, 'constructorsChampionship'));
     });
     return results;
   } else {
