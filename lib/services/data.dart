@@ -7,7 +7,6 @@ class Results {
   const Results({required this.results});
 }
 
-// Convert respone into dart class
 class Result {
   final String position;
   final String points;
@@ -79,8 +78,6 @@ Future<List<Result>> fetchResult() async {
       options: buildCacheOptions(const Duration(minutes: 5)));
 
   if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
     var data = response.data;
     var allPositions = data["MRData"]["RaceTable"]["Races"][0]["Results"];
     var results = <Result>[];
@@ -89,8 +86,6 @@ Future<List<Result>> fetchResult() async {
     });
     return results;
   } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
     throw Exception('Failed to load result');
   }
 }
@@ -103,8 +98,6 @@ Future<List<Result>> fetchDriversChampResult() async {
       options: buildCacheOptions(const Duration(minutes: 5)));
 
   if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
     var data = response.data;
     var allPositions = data["MRData"]["StandingsTable"]["StandingsLists"][0]
         ["DriverStandings"];
@@ -114,8 +107,6 @@ Future<List<Result>> fetchDriversChampResult() async {
     });
     return results;
   } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
     throw Exception('Failed to load result');
   }
 }
@@ -128,8 +119,6 @@ Future<List<Result>> fetchConstructorsChampResult() async {
       options: buildCacheOptions(const Duration(minutes: 5)));
 
   if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
     var data = response.data;
     var allPositions = data["MRData"]["StandingsTable"]["StandingsLists"][0]
         ["ConstructorStandings"];
@@ -139,8 +128,6 @@ Future<List<Result>> fetchConstructorsChampResult() async {
     });
     return results;
   } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
     throw Exception('Failed to load result');
   }
 }
