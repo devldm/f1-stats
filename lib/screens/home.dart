@@ -58,23 +58,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 itemCount: snapshot.data?.length,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(4.5),
+                  return Card(
+                    color: null,
+                    elevation: 2,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.white60,
+                        // color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: snapshot.data![index].status == 'Finished'
-                                ? Colors.grey.withOpacity(0.5)
-                                : Colors.red.shade600.withOpacity(0.1),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: const Offset(
-                                0, 3), // changes position of shadow
-                          ),
-                        ],
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     color: snapshot.data![index].status == 'Finished'
+                        //         ? Colors.grey.withOpacity(0.5)
+                        //         : Colors.red.shade600.withOpacity(0.1),
+                        //     spreadRadius: 5,
+                        //     blurRadius: 7,
+                        //     offset: const Offset(
+                        //         0, 3), // changes position of shadow
+                        //   ),
+                        //],
                       ),
                       width: MediaQuery.of(context).size.width * 0.95,
                       child: Padding(
@@ -116,9 +117,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Text(
                                         snapshot.data![index].driver!.name,
                                         textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w300,
-                                            color: Colors.grey.shade700),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w300,
+                                          // color: Colors.grey.shade700
+                                        ),
                                       ),
                                     ],
                                   ),

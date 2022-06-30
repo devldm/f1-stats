@@ -48,13 +48,9 @@ class _MyDriversPageState extends State<MyDriversPage> {
                 itemCount: snapshot.data?.length,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(4.5),
+                  return Card(
+                    elevation: 2,
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white60,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
                       width: MediaQuery.of(context).size.width * 0.95,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -91,9 +87,8 @@ class _MyDriversPageState extends State<MyDriversPage> {
                                       Text(
                                         snapshot.data![index].driver!.name,
                                         textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w300,
-                                            color: Colors.grey.shade700),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w300),
                                       ),
                                     ],
                                   ),

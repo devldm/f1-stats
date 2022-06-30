@@ -1,5 +1,6 @@
 import 'package:f1stats/screens/constructors_championship.dart';
 import 'package:f1stats/screens/drivers_championship.dart';
+import 'package:f1stats/services/colour_theme.dart';
 import 'package:flutter/material.dart';
 import 'screens/home.dart';
 
@@ -14,10 +15,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'F1 Stats',
+      theme: ThemeClass.lightTheme,
+      darkTheme: ThemeClass.darkTheme,
+      themeMode: ThemeMode.system,
       home: const MyHomePage(title: 'F1 Stats'),
       initialRoute: MyHomePage.id,
       routes: {
