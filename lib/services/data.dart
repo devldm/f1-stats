@@ -28,7 +28,7 @@ class Result {
       return Result(
           position: json['position'],
           points: json['points'],
-          fastestLap: json['FastestLap']['Time']['time'],
+          fastestLap: json['FastestLap']?['Time']['time'] ?? "-",
           driver: Driver.fromJson(json['Driver']),
           constructor: Constructor.fromJson(json['Constructor']),
           status: json['status']);
@@ -70,16 +70,32 @@ class Constructor {
   }
 }
 
-Future<List<Result>> fetchResult() async {
+class Race {
+  final String raceName;
+  final String round;
+
+  const Race({required this.raceName, required this.round});
+
+  factory Race.fromJson(Map<String, dynamic> json) {
+    return Race(raceName: json['raceName'], round: json['round']);
+  }
+}
+
+Future<List<Result>> fetchResult([round]) async {
   var dio = Dio();
-  const url = 'http://ergast.com/api/f1/current/last/results.json';
+
+  final url = round != null
+      ? "http://ergast.com/api/f1/2022/$round/results.json"
+      : 'http://ergast.com/api/f1/current/last/results.json';
   dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: url)).interceptor);
   final response = await dio.get(url,
       options: buildCacheOptions(const Duration(minutes: 5)));
 
   if (response.statusCode == 200) {
     var data = response.data;
-    var allPositions = data["MRData"]["RaceTable"]["Races"][0]["Results"];
+    var allPositions = data["MRData"]["total"] != "0"
+        ? data["MRData"]["RaceTable"]["Races"][0]["Results"]
+        : data["MRData"]["RaceTable"]["Races"];
     var results = <Result>[];
     allPositions.forEach((value) {
       results.add(Result.fromJson(value, 'raceResult'));
@@ -127,6 +143,26 @@ Future<List<Result>> fetchConstructorsChampResult() async {
       results.add(Result.fromJson(value, 'constructorsChampionship'));
     });
     return results;
+  } else {
+    throw Exception('Failed to load result');
+  }
+}
+
+Future<List<Race>> fetchRaces() async {
+  var dio = Dio();
+  const url = 'http://ergast.com/api/f1/current.json';
+  dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: url)).interceptor);
+  final response = await dio.get(url,
+      options: buildCacheOptions(const Duration(minutes: 5)));
+
+  if (response.statusCode == 200) {
+    var data = response.data;
+    var allPositions = data["MRData"]["RaceTable"]["Races"];
+    var races = <Race>[];
+    allPositions.forEach((value) {
+      races.add(Race.fromJson(value));
+    });
+    return races;
   } else {
     throw Exception('Failed to load result');
   }
