@@ -14,10 +14,12 @@ class Result {
   final Constructor? constructor;
   final String? fastestLap;
   final String? status;
+  final String? round;
 
   const Result(
       {required this.position,
       required this.points,
+      this.round,
       this.driver,
       this.constructor,
       this.fastestLap,
@@ -31,7 +33,8 @@ class Result {
           fastestLap: json['FastestLap']?['Time']['time'] ?? "-",
           driver: Driver.fromJson(json['Driver']),
           constructor: Constructor.fromJson(json['Constructor']),
-          status: json['status']);
+          status: json['status'],
+          round: json['round']);
     } else if (type == 'driversChampionship') {
       return Result(
           position: json['position'],
